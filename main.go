@@ -1,21 +1,26 @@
 package main
 
 import (
+	"sync"
+
 	_ "github.com/influxdata/influxdb1-client"
 )
 
 func main() {
 
 	influx := MakeNewInflux("http://localhost:8086", "", "", "TEST")
-
 	influx.Connect()
 
-	influx.InsertRandomCondizionatori(5)
-	//influx.Query("select value, color::tag from a_year.fromgolangclient")
+	scenario := MakeNewScenario(influx)
 
-	/*for i, r := range results {
+	var wg sync.WaitGroup
+	wg.Add(2)
 
-		log.Println("values: ", i, r)
-	}*/
+	go scenario.InsertRandomEnergyStations(15)
+	go scenario.InsertRandomPowerMeters(15)
+	go scenario.InsertRandomCondizionatori(15)
+	go scenario.InsertRandomEnvironmentSensors(15)
+
+	wg.Wait()
 
 }
