@@ -21,6 +21,10 @@ func main() {
 	if err != nil {
 		log.Fatalf("error with pollling value")
 	}
+	numapparati, err := strconv.Atoi(prop["numapparati"])
+	if err != nil {
+		log.Fatalf("error with pollling value")
+	}
 	influxPolling, err := strconv.Atoi(prop["polling"])
 	if err != nil {
 		log.Fatalf("error with pollling value")
@@ -31,7 +35,7 @@ func main() {
 	influx := MakeNewInflux(influxURL, influxUsername, influxPassword, influxDatabase)
 	influx.Connect()
 
-	scenario := MakeNewScenario(influx, numsiti, influxPolling)
+	scenario := MakeNewScenario(influx, numsiti, numapparati, influxPolling)
 
 	var wg sync.WaitGroup
 	wg.Add(4)

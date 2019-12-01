@@ -12,16 +12,18 @@ import (
 
 /* Tye influx (it manages the connections) */
 type scenarios struct {
-	influxdb *influx
-	numsiti  int
-	polling  int
+	influxdb    *influx
+	numsiti     int
+	numapparati int
+	polling     int
 }
 
-func MakeNewScenario(influxdb *influx, numsiti int, polling int) *scenarios {
+func MakeNewScenario(influxdb *influx, numsiti int, numapparati int, polling int) *scenarios {
 
 	myScenario := new(scenarios)
 	myScenario.influxdb = influxdb
 	myScenario.numsiti = numsiti
+	myScenario.numapparati = numapparati
 	myScenario.polling = polling
 
 	return myScenario
@@ -33,9 +35,11 @@ func (scenario *scenarios) InsertRandomCondizionatori() {
 	for {
 
 		for i := 0; i < scenario.numsiti; i++ {
-			sito := "sito" + strconv.Itoa(i) + ".1." + "condizionatore"
+			sito := "sito" + strconv.Itoa(i) + "." + strconv.Itoa(scenario.numapparati) + "." + "clima"
 
-			scenario.InsertCondizionatore(sito)
+			for j := 0; j < scenario.numapparati; j++ {
+				scenario.InsertCondizionatore(sito)
+			}
 
 		}
 		time.Sleep(time.Duration(scenario.polling) * time.Second)
@@ -48,9 +52,11 @@ func (scenario *scenarios) InsertRandomPowerMeters() {
 	for {
 
 		for i := 0; i < scenario.numsiti; i++ {
-			sito := "sito" + strconv.Itoa(i) + ".1." + "powermeter"
+			sito := "sito" + strconv.Itoa(i) + "." + strconv.Itoa(scenario.numapparati) + "." + "powermeter"
 
-			scenario.InsertPowerMeter(sito)
+			for j := 0; j < scenario.numapparati; j++ {
+				scenario.InsertPowerMeter(sito)
+			}
 
 		}
 		time.Sleep(time.Duration(scenario.polling) * time.Second)
@@ -115,9 +121,11 @@ func (scenario *scenarios) InsertRandomEnergyStations() {
 	for {
 
 		for i := 0; i < scenario.numsiti; i++ {
-			sito := "sito" + strconv.Itoa(i) + ".1." + "energystation"
+			sito := "sito" + strconv.Itoa(i) + "." + strconv.Itoa(scenario.numapparati) + "." + "energystation"
 
-			scenario.InsertEnergyStation(sito)
+			for j := 0; j < scenario.numapparati; j++ {
+				scenario.InsertEnergyStation(sito)
+			}
 
 		}
 		time.Sleep(time.Duration(scenario.polling) * time.Second)
@@ -190,9 +198,11 @@ func (scenario *scenarios) InsertRandomEnvironmentSensors() {
 	for {
 
 		for i := 0; i < scenario.numsiti; i++ {
-			sito := "sito" + strconv.Itoa(i) + ".1." + "sensor"
+			sito := "sito" + strconv.Itoa(i) + "." + strconv.Itoa(scenario.numapparati) + "." + "sensor"
 
-			scenario.InsertEnvironmentSensor(sito)
+			for j := 0; j < scenario.numapparati; j++ {
+				scenario.InsertEnvironmentSensor(sito)
+			}
 
 		}
 		time.Sleep(time.Duration(scenario.polling) * time.Second)
