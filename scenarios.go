@@ -13,43 +13,47 @@ import (
 /* Tye influx (it manages the connections) */
 type scenarios struct {
 	influxdb *influx
+	numsiti  int
+	polling  int
 }
 
-func MakeNewScenario(influxdb *influx) *scenarios {
+func MakeNewScenario(influxdb *influx, numsiti int, polling int) *scenarios {
 
 	myScenario := new(scenarios)
 	myScenario.influxdb = influxdb
+	myScenario.numsiti = numsiti
+	myScenario.polling = polling
 
 	return myScenario
 
 }
 
-func (scenario *scenarios) InsertRandomCondizionatori(seconds int) {
+func (scenario *scenarios) InsertRandomCondizionatori() {
 
 	for {
 
-		for i := 0; i < 10; i++ {
+		for i := 0; i < scenario.numsiti; i++ {
 			sito := "sito" + strconv.Itoa(i) + ".1." + "condizionatore"
 
 			scenario.InsertCondizionatore(sito)
 
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(scenario.polling) * time.Second)
 	}
 
 }
 
-func (senario *scenarios) InsertRandomPowerMeters(seconds int) {
+func (scenario *scenarios) InsertRandomPowerMeters() {
 
 	for {
 
-		for i := 0; i < 10; i++ {
+		for i := 0; i < scenario.numsiti; i++ {
 			sito := "sito" + strconv.Itoa(i) + ".1." + "powermeter"
 
-			senario.InsertPowerMeter(sito)
+			scenario.InsertPowerMeter(sito)
 
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(scenario.polling) * time.Second)
 	}
 
 }
@@ -106,17 +110,17 @@ func (scenario *scenarios) InsertPowerMeter(measure string) {
 	}
 }
 
-func (scenario *scenarios) InsertRandomEnergyStations(seconds int) {
+func (scenario *scenarios) InsertRandomEnergyStations() {
 
 	for {
 
-		for i := 0; i < 10; i++ {
+		for i := 0; i < scenario.numsiti; i++ {
 			sito := "sito" + strconv.Itoa(i) + ".1." + "energystation"
 
 			scenario.InsertEnergyStation(sito)
 
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(scenario.polling) * time.Second)
 	}
 
 }
@@ -181,17 +185,17 @@ func (scenario *scenarios) InsertEnergyStation(measure string) {
 	}
 }
 
-func (scenario *scenarios) InsertRandomEnvironmentSensors(seconds int) {
+func (scenario *scenarios) InsertRandomEnvironmentSensors() {
 
 	for {
 
-		for i := 0; i < 10; i++ {
+		for i := 0; i < scenario.numsiti; i++ {
 			sito := "sito" + strconv.Itoa(i) + ".1." + "sensor"
 
 			scenario.InsertEnvironmentSensor(sito)
 
 		}
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(scenario.polling) * time.Second)
 	}
 
 }
