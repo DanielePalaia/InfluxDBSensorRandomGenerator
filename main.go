@@ -12,19 +12,15 @@ func main() {
 
 	/** Read configuration file properties.ini*/
 	/* Reading properties from ./properties.ini */
-	prop, _ := ReadPropertiesFile("./properties.ini")
+	prop, err := ReadPropertiesFile("./properties.ini")
+	if err != nil {
+		log.Fatalf("error trying to open file properties.ini")
+	}
 	influxURL, _ := prop["influxURL"]
 	influxUsername := prop["influxUsername"]
 	influxPassword := prop["influxPassword"]
 	influxDatabase := prop["database"]
-	numsiti, err := strconv.Atoi(prop["numsiti"])
-	if err != nil {
-		log.Fatalf("error with pollling value")
-	}
-	numapparati, err := strconv.Atoi(prop["numapparati"])
-	if err != nil {
-		log.Fatalf("error with pollling value")
-	}
+
 	influxPolling, err := strconv.Atoi(prop["polling"])
 	if err != nil {
 		log.Fatalf("error with pollling value")
@@ -35,15 +31,19 @@ func main() {
 	influx := MakeNewInflux(influxURL, influxUsername, influxPassword, influxDatabase)
 	influx.Connect()
 
-	scenario := MakeNewScenario(influx, numsiti, numapparati, influxPolling)
+	scenario := MakeNewScenario(influx, influxPolling)
 
 	var wg sync.WaitGroup
 	wg.Add(4)
 
-	go scenario.InsertRandomEnergyStations()
-	go scenario.InsertRandomPowerMeters()
-	go scenario.InsertRandomCondizionatori()
-	go scenario.InsertRandomEnvironmentSensors()
+	appliances, err := ReadPropertiesFile("./config/type_appliances.ini")
+	if err != nil {
+		log.Fatalf("error trying to open file ./config/type_appliaces.ini")
+	}
+
+	for k, v := range appliances {
+		go scenario.InsertAppliances(k, v)
+	}
 
 	wg.Wait()
 
