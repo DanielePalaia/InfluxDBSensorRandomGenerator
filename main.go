@@ -21,6 +21,11 @@ func main() {
 	influxPassword := prop["influxPassword"]
 	influxDatabase := prop["database"]
 
+	numApparati, err := strconv.Atoi(prop["numApparati"])
+	if err != nil {
+		log.Fatalf("error with pollling value")
+	}
+
 	influxPolling, err := strconv.Atoi(prop["polling"])
 	if err != nil {
 		log.Fatalf("error with pollling value")
@@ -31,7 +36,7 @@ func main() {
 	influx := MakeNewInflux(influxURL, influxUsername, influxPassword, influxDatabase)
 	influx.Connect()
 
-	scenario := MakeNewScenario(influx, influxPolling)
+	scenario := MakeNewScenario(influx, influxPolling, numApparati)
 
 	var wg sync.WaitGroup
 	wg.Add(4)
