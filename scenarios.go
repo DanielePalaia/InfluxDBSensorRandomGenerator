@@ -41,7 +41,7 @@ func (scenario *scenarios) InsertAppliances(typeApp string, fileName string) {
 
 		for k, _ := range scenario.sites {
 
-			if typeApp == "enery_station" {
+			if typeApp == "EnergyStation" {
 				numApparati = 1
 			} else {
 				numApparati = scenario.numApparati
