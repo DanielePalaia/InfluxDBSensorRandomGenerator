@@ -48,7 +48,7 @@ func (scenario *scenarios) InsertAppliances(typeApp string, fileName string) {
 			}
 
 			for i := 0; i < numApparati; i++ {
-				site := k + ".1." + typeApp + strconv.Itoa(i)
+				site := k + "_1_" + typeApp + strconv.Itoa(i)
 				scenario.InsertFromFile(site, fileName)
 			}
 		}
